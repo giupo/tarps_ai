@@ -1,7 +1,13 @@
+import os
 from functools import lru_cache
 from pathlib import Path
 
-from ultralytics import YOLO
+# Must run before importing ultralytics: it writes its config/settings.json
+# to this dir on first import, and the default (~/.config/Ultralytics) isn't
+# writable on platforms like Render. setdefault so an explicit env var wins.
+os.environ.setdefault("YOLO_CONFIG_DIR", str(Path("/tmp") / "ultralytics"))
+
+from ultralytics import YOLO  # noqa: E402
 
 from tarps_ai.core.config import get_settings, load_hostile_classes
 from tarps_ai.core.models import Detection
