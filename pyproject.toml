@@ -1,0 +1,33 @@
+[project]
+name = "tarps-ai"
+version = "0.1.0"
+description = "Identify via OpenCV data from TARPS"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi>=0.140.13",
+    "jinja2>=3.1.6",
+    "opencv-python-headless>=5.0.0.93",
+    "pydantic-settings>=2.14.2",
+    "python-multipart>=0.0.32",
+    "pyyaml>=6.0.3",
+    "typer>=0.27.0",
+    "ultralytics>=8.4.110",
+    "uvicorn[standard]>=0.52.0",
+    "weasyprint>=69.0",
+]
+
+[project.scripts]
+tarps = "tarps_ai.cli.main:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["tarps_ai"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]

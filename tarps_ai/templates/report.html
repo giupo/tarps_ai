@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>TARPS Recon Report</title>
+<style>
+body { font-family: Arial; margin: 20px; background: #f0f0f0; }
+.card {
+    background: white;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px #aaa;
+}
+img { max-width: 600px; border-radius: 5px; margin-top: 10px; }
+h2 { margin-top: 0; }
+.detections { color: #a00; font-weight: bold; }
+</style>
+</head>
+<body>
+<h1>TARPS Recon Report</h1>
+<p>Generated: {{ run.created_at.strftime("%Y-%m-%d %H:%M:%S") }}</p>
+{% for e in run.entries %}
+<div class="card">
+    <h2>{{ e.name }}</h2>
+    <p><b>Lat:</b> {{ "%.6f"|format(e.lat) }}<br>
+       <b>Lon:</b> {{ "%.6f"|format(e.lon) }}<br>
+       <b>Alt:</b> {{ "%.1f"|format(e.alt) }} m<br>
+       <b>Heading:</b> {{ "%.1f"|format(e.hdg) }}&deg;</p>
+    <p class="detections">
+        Rilevamenti: {% for d in e.detections %}{{ d.cls_name }} ({{ "%.0f"|format(d.confidence * 100) }}%){% if not loop.last %}, {% endif %}{% endfor %}
+    </p>
+    <img src="images/{{ e.image_name }}" alt="TARPS image">
+</div>
+{% endfor %}
+</body>
+</html>

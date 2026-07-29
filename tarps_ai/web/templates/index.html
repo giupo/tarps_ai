@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>TARPS AI</title>
+<style>
+body { font-family: Arial; margin: 20px; background: #f0f0f0; }
+.card {
+    background: white;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px #aaa;
+}
+label { display: block; margin-top: 10px; font-weight: bold; }
+input[type=text] { width: 100%; padding: 6px; box-sizing: border-box; }
+button { margin-top: 12px; padding: 8px 16px; }
+table { width: 100%; border-collapse: collapse; }
+td, th { text-align: left; padding: 6px 8px; border-bottom: 1px solid #ddd; }
+</style>
+</head>
+<body>
+<h1>TARPS AI</h1>
+
+{% if request.query_params.get("error") %}
+<p style="color:#a00;"><b>{{ request.query_params.get("error") }}</b></p>
+{% endif %}
+
+<div class="card">
+    <h2>Scansiona cartella locale</h2>
+    <form action="/scan" method="post">
+        <label for="folder">Cartella TARPS (vuoto = default)</label>
+        <input type="text" id="folder" name="folder" placeholder="{{ default_folder }}">
+        <button type="submit">Scansiona</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>Carica file</h2>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <label for="files">Immagini + json TARPS</label>
+        <input type="file" id="files" name="files" multiple required>
+        <button type="submit">Carica e analizza</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>Run precedenti</h2>
+    {% if runs %}
+    <table>
+        <tr><th>Data</th><th>Origine</th><th>Bersagli</th><th>Report</th><th>PDF</th><th>Waypoints</th></tr>
+        {% for r in runs %}
+        <tr>
+            <td>{{ r.created_at.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+            <td>{{ r.source }}</td>
+            <td>{{ r.count }}</td>
+            <td><a href="/runs/{{ r.run_id }}/report.html">HTML</a></td>
+            <td><a href="/runs/{{ r.run_id }}/report.pdf">PDF</a></td>
+            <td><a href="/runs/{{ r.run_id }}/waypoints.json">JSON</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>Nessun run ancora eseguito.</p>
+    {% endif %}
+</div>
+</body>
+</html>
