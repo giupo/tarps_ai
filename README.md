@@ -60,6 +60,12 @@ uv run tarps serve --host 0.0.0.0 --port 8000
 `uv run python main.py` continua a funzionare esattamente come lo script
 originale (equivalente a `tarps scan` senza argomenti), per compatibilità.
 
+`tarps serve` rispetta la variabile d'ambiente `$PORT` (tipica di piattaforme
+come Heroku/Render/Railway): se impostata, viene usata come porta di default
+(e l'host di default diventa `0.0.0.0` invece di `127.0.0.1`, per essere
+raggiungibile dall'esterno). `--port`/`--host` espliciti hanno sempre la
+precedenza su `$PORT`.
+
 Ogni `scan` crea un run in `output/runs/<run_id>/` con:
 
 ```

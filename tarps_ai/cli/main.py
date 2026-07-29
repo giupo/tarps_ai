@@ -53,10 +53,26 @@ def scan(
     typer.echo(f"Waypoints DTC generati: {run_directory / 'waypoints.json'}")
 
 
+def _default_port() -> int:
+    raw = os.environ.get("PORT")
+    if raw is None:
+        return 8000
+    try:
+        return int(raw)
+    except ValueError:
+        typer.echo(f"Valore di $PORT non valido: {raw!r}, uso 8000", err=True)
+        return 8000
+
+
 @app.command()
 def serve(
-    host: str = typer.Option("127.0.0.1", help="Host di binding"),
-    port: int = typer.Option(8000, help="Porta di ascolto"),
+    host: str = typer.Option(
+        "0.0.0.0" if "PORT" in os.environ else "127.0.0.1", help="Host di binding"
+    ),
+    port: int = typer.Option(
+        _default_port(),
+        help="Porta di ascolto (default: variabile d'ambiente $PORT, altrimenti 8000)",
+    ),
     reload: bool = typer.Option(False, help="Ricarica automatica in sviluppo"),
 ) -> None:
     """Avvia la webapp FastAPI."""
