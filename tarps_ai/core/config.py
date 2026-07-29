@@ -11,7 +11,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="TARPS_")
 
-    dcs_folder: Path = Path(os.path.expanduser("~/Saved Games/DCS"))
+    dcs_folder: Path = Path(os.path.expanduser("~/Saved Games/DCS_F14"))
     tarps_subfolder: str = "TARPS"
     tarps_folder_override: Path | None = None
     output_folder: Path = REPO_ROOT / "output"

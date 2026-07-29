@@ -27,7 +27,7 @@ def test_render_html_includes_entry_data():
 
     assert "SAM Site" in html
     assert "images/sam.png" in html
-    assert "sam (80%)" in html
+    assert "sam" in html and "80%" in html
 
 
 def test_build_dtc_waypoints_matches_entries():

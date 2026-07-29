@@ -11,7 +11,7 @@ app = typer.Typer(
 @app.command()
 def scan(
     folder: Path | None = typer.Option(
-        None, help="Cartella TARPS da scansionare (default: ~/Saved Games/DCS/TARPS)"
+        None, help="Cartella TARPS da scansionare (default: ~/Saved Games/DCS_F14/TARPS)"
     ),
     output: Path | None = typer.Option(
         None, help="Cartella di output per i run generati"

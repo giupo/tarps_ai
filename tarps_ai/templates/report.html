@@ -1,35 +1,100 @@
 <html>
 <head>
+<meta charset="utf-8">
 <title>TARPS Recon Report</title>
 <style>
-body { font-family: Arial; margin: 20px; background: #f0f0f0; }
-.card {
-    background: white;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 5px #aaa;
+:root {
+    --bg: #eef1f5;
+    --surface: #ffffff;
+    --text: #1c2430;
+    --muted: #5b6472;
+    --border: #dde2e8;
+    --accent: #2a6f6f;
+    --danger: #b3261e;
+    --danger-bg: #fdecea;
 }
-img { max-width: 600px; border-radius: 5px; margin-top: 10px; }
-h2 { margin-top: 0; }
-.detections { color: #a00; font-weight: bold; }
+* { box-sizing: border-box; }
+body {
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 32px 24px 60px;
+    background: var(--bg);
+    color: var(--text);
+}
+.wrap { max-width: 820px; margin: 0 auto; }
+header {
+    border-bottom: 3px solid var(--accent);
+    padding-bottom: 14px;
+    margin-bottom: 24px;
+}
+header h1 { margin: 0; font-size: 1.5rem; letter-spacing: 0.02em; }
+header p { margin: 4px 0 0; color: var(--muted); font-size: 0.88rem; }
+.card {
+    background: var(--surface);
+    padding: 18px 22px;
+    margin-bottom: 18px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(20, 30, 40, 0.08);
+    page-break-inside: avoid;
+}
+.card h2 { margin: 0 0 12px; font-size: 1.1rem; }
+.coords {
+    font-family: "SF Mono", "Courier New", monospace;
+    font-size: 0.88rem;
+    color: var(--text);
+    margin: 0 0 12px;
+}
+.coords span { color: var(--muted); font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+.coords b { display: inline-block; min-width: 90px; }
+.chips { margin: 0 0 14px; }
+.chip {
+    display: inline-block;
+    padding: 3px 10px;
+    margin: 0 6px 6px 0;
+    border-radius: 999px;
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+img {
+    max-width: 100%;
+    width: 560px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: block;
+}
+.empty { color: var(--muted); }
 </style>
 </head>
 <body>
-<h1>TARPS Recon Report</h1>
-<p>Generated: {{ run.created_at.strftime("%Y-%m-%d %H:%M:%S") }}</p>
+<div class="wrap">
+<header>
+    <h1>TARPS Recon Report</h1>
+    <p>Generato: {{ run.created_at.strftime("%Y-%m-%d %H:%M:%S") }} &middot; origine: {{ run.source }} &middot; bersagli rilevati: {{ run.entries|length }}</p>
+</header>
+
 {% for e in run.entries %}
 <div class="card">
     <h2>{{ e.name }}</h2>
-    <p><b>Lat:</b> {{ "%.6f"|format(e.lat) }}<br>
-       <b>Lon:</b> {{ "%.6f"|format(e.lon) }}<br>
-       <b>Alt:</b> {{ "%.1f"|format(e.alt) }} m<br>
-       <b>Heading:</b> {{ "%.1f"|format(e.hdg) }}&deg;</p>
-    <p class="detections">
-        Rilevamenti: {% for d in e.detections %}{{ d.cls_name }} ({{ "%.0f"|format(d.confidence * 100) }}%){% if not loop.last %}, {% endif %}{% endfor %}
+    <p class="coords">
+        <b><span>Lat</span> {{ "%.6f"|format(e.lat) }}</b>
+        <b><span>Lon</span> {{ "%.6f"|format(e.lon) }}</b>
+        <b><span>Alt</span> {{ "%.1f"|format(e.alt) }} m</b>
+        <b><span>Hdg</span> {{ "%.1f"|format(e.hdg) }}&deg;</b>
     </p>
+    <div class="chips">
+        {% for d in e.detections %}<span class="chip">{{ d.cls_name }} &middot; {{ "%.0f"|format(d.confidence * 100) }}%</span>{% endfor %}
+    </div>
     <img src="images/{{ e.image_name }}" alt="TARPS image">
 </div>
+{% else %}
+<div class="card">
+    <p class="empty">Nessun bersaglio ostile rilevato in questo run.</p>
+</div>
 {% endfor %}
+</div>
 </body>
 </html>

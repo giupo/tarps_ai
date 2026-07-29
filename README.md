@@ -29,13 +29,13 @@ stesso in modalità editabile.
 
 ## Configurazione
 
-La cartella TARPS di default è `~/Saved Games/DCS/TARPS` (quella usata da
+La cartella TARPS di default è `~/Saved Games/DCS_F14/TARPS` (quella usata da
 DCS). Tutte le impostazioni sono sovrascrivibili con variabili d'ambiente
 con prefisso `TARPS_` (vedi `tarps_ai/core/config.py`):
 
 | Variabile | Default | Significato |
 |---|---|---|
-| `TARPS_DCS_FOLDER` | `~/Saved Games/DCS` | cartella base di DCS |
+| `TARPS_DCS_FOLDER` | `~/Saved Games/DCS_F14` | cartella base di DCS |
 | `TARPS_TARPS_SUBFOLDER` | `TARPS` | sottocartella con json+immagini |
 | `TARPS_OUTPUT_FOLDER` | `./output` | dove finiscono i run generati |
 | `TARPS_MODEL_PATH` | `./model/best.pt` | path del modello YOLO |
