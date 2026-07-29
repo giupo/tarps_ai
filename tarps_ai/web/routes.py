@@ -14,7 +14,7 @@ router = APIRouter()
 templates = Jinja2Templates(directory=Path(__file__).resolve().parent / "templates")
 
 
-@router.get("/")
+@router.api_route("/", methods=["GET", "HEAD"])
 def index(request: Request):
     return templates.TemplateResponse(
         request,
